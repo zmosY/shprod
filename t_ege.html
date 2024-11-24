@@ -1,0 +1,1567 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<title>ЕГЭ по информатике - тренажер</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        background: #f0f2f5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+    }
+
+    .slider-container {
+        position: relative;
+        padding: 20px 80px;
+        min-height: 600px; 
+        height: auto;
+        overflow: visible;
+    }
+
+    .task-cards {
+        position: relative;
+        height: auto;
+        min-height: 600px;
+        overflow: visible;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .task-card {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        min-height: auto;
+        height: auto;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        opacity: 0;
+        transform: translateX(100%);
+        overflow-y: auto;
+    }
+
+    .task-card:first-child .solution {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .task-card:first-child .task-content {
+        margin-bottom: 15px;
+    }
+
+    .task-card:first-child .example-box {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .task-card:first-child {
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .task-card.active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .task-card.prev {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    .task-card.next {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    .task-card h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.7em;
+    }
+
+    .task-content {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        overflow: auto;
+        line-height: 1.5;
+        color: #2c3e50;
+    }
+
+    .solution {
+        background: #f7f9fc;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 1.1em;
+        overflow: auto;
+    }
+
+    .solution p {
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .solution ol, .solution ul {
+        margin-left: 20px;
+        margin-bottom: 15px;
+    }
+
+    .solution li {
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+
+    .video-link {
+        display: inline-block;
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s;
+        font-size: 1.2em;
+        margin-right: 15px;
+    }
+
+    .video-link:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    .slider-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 20px 25px;
+        cursor: pointer;
+        border-radius: 5px;
+        z-index: 10;
+        transition: background 0.3s ease;
+        font-size: 1.4em;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+
+    .slider-button:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .slider-button:not(:disabled):hover {
+        background: #2980b9;
+    }
+
+    .example-box {
+        background: #e8f4fc;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #3498db;
+        overflow: auto;
+    }
+
+    .example-box ul {
+        margin-left: 20px;
+        list-style-position: inside; 
+        padding-left: 0; 
+    }
+
+    .example-box ul ul {
+        margin-left: 15px;
+        list-style-position: outside;
+        padding-left: 15px;
+    }
+
+    .example-box li {
+        margin-bottom: 5px;
+    }
+
+    .resource-links {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .resource-links .video-links {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .resource-links p {
+        margin: 5px 0;
+    }
+
+    .resource-links a {
+        display: block;
+        color: #3498db;
+        text-decoration: none;
+        margin: 10px 0;
+        font-size: 1.1em;
+    }
+
+    .resource-links a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+    
+    pre {
+        white-space: pre-wrap; 
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ЕГЭ по информатике</h1>
+            <p>Интерактивный тренажер с объяснениями</p>
+        </div>
+
+        <div class="slider-container">
+            <button class="slider-button prev-btn" onclick="showPrevCard()">←</button>
+            <div class="task-cards">
+                <div class="task-card active">
+                    <h3>Задание 1: Анализ информационных моделей</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ информационной модели (граф/таблица/схема)</li>
+                            <li>Выделение связей между элементами</li>
+                            <li>Проверка данных по условию задачи</li>
+                            <li>Формулировка ответа</li>
+                        </ol>
+                        <p><strong>Частые ошибки:</strong></p>
+                        <ul>
+                            <li>Неверная интерпретация связей</li>
+                            <li>Пропуск условий</li>
+                            <li>Неправильное определение типа модели</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Проанализируйте данную информационную модель.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=jAcSLGmW8wM" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/cd6e9b81f87e478dde3c051c47fcc649/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=1" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+                
+                <div class="task-card next">
+                    <h3>Задание 2: Построение таблиц истинности логических выражений</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Выписать переменные</li>
+                            <li>Создать таблицу комбинаций</li>
+                            <li>Вычислить значения выражений</li>
+                        </ol>
+                        <p><strong>Основные операции:</strong></p>
+                        <ul>
+                            <li>И (∧) - истина если оба true</li>
+                            <li>ИЛИ (∨) - истина если хоть один true</li>
+                            <li>НЕ (¬) - инверсия значения</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Составьте таблицу истинности для выражения A И (B ИЛИ C).</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=eKBEN8-KfbM" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/391576e759dc01c32964a744ebc07b43/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=2" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 3: Поиск информации в реляционных базах данных</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ структуры базы данных</li>
+                            <li>Формулировка запроса</li>
+                            <li>Построение SQL-запроса</li>
+                        </ol>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Неправильное соединение таблиц</li>
+                            <li>Некорректные условия в WHERE</li>
+                        </ul>
+                        <p><strong>Основные операторы SQL:</strong></p>
+                        <ul>
+                            <li>SELECT - выбор данных</li>
+                            <li>FROM - указание таблиц</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>В базе данных имеются таблицы:</p>
+                            <pre>
+Students(id, name, age)
+Courses(id, title, department)
+Enrollments(student_id, course_id, grade)</pre>
+                            <p>Напишите запрос для получения списка студентов и их оценок по курсу "Информатика"</p>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+SELECT Students.name, Enrollments.grade
+FROM Students
+JOIN Enrollments ON Students.id = Enrollments.student_id
+JOIN Courses ON Enrollments.course_id = Courses.id
+WHERE Courses.title = 'Информатика';</pre>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=DF-DiHtbMjs" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/f0248aff4c2dc8508787ce1e4d4087d6/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=3" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+                
+                <div class="task-card next">
+                    <h3>Задание 4: Кодирование и декодирование информации</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ методов кодирования</li>
+                            <li>Работа с данными</li>
+                            <li>Процесс кодирования/декодирования</li>
+                        </ol>
+                        <p><strong>Основные виды кодирования:</strong></p>
+                        <ul>
+                            <li>Равномерное кодирование</li>
+                            <li>Неравномерное кодирование</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Для кодирования букв А, Б, В, Г решили использовать двоичное представление чисел 0, 1, 2, 3 соответственно. Как можно закодировать последовательность символов ГВБА?</p>
+                            <p><strong>Ответ:</strong></p>
+                            <ol>
+                                <li>Г = 11</li>
+                                <li>В = 10</li>
+                                <li>Б = 01</li>
+                                <li>А = 00</li>
+                            </ol>
+                            <p>Итоговый код: 11100100</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=lfN1zPTUOPE" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/0d4a7939513e50e776f4bd9bae0199a3/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=4" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+                
+                <div class="task-card next">
+                    <h3>Задание 5: Анализ и построение алгоритмов для исполнителей</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ условий задачи</li>
+                            <li>Построение алгоритма</li>
+                            <li>Оптимизация и проверка</li>
+                        </ol>
+                        <p><strong>Типичные исполнители:</strong></p>
+                        <ul>
+                            <li>Робот на клетчатом поле</li>
+                            <li>Чертёжник</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Робот находится в левом верхнем углу поля. Напишите алгоритм, который приведет робота в правый нижний угол, обходя препятствия.</p>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+НАЧАЛО
+ПОКА не_справа_стена
+    ЕСЛИ справа_свободно
+        вправо
+    ИНАЧЕ
+        вниз
+    КОНЕЦ ЕСЛИ
+КОНЕЦ ПОКА
+КОНЕЦ</pre>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=mz8pINlcCUk" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/d955780d2ad08e8308f94ba9467c4907/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=5" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 6: Определение результатов работы простейших алгоритмов</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Входные данные</li>
+                            <li>Анализ алгоритма</li>
+                            <li>Пошаговое выполнение</li>
+                        </ol>
+                        <p><strong>Типичные конструкции в алгоритмах:</strong></p>
+                        <ul>
+                            <li>Циклы с параметром (for)</li>
+                            <li>Циклы с условием (while)</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример алгоритма:</strong></p>
+                            <pre>
+алг Пример
+нач
+    цел a, b, sum
+    ввод a, b
+    sum := 0
+    нц пока a <= b
+        если mod(a, 2) = 0 то
+            sum := sum + a
+        все
+        a := a + 1
+    кц
+    вывод sum
+кон</pre>
+                            <p><strong>Решение:</strong></p>
+                            <ol>
+                                <li>Входные данные: a = 2, b = 6</li>
+                                <li>Результат: 12</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=x3zC3uTHq7w" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/57d424c58948ba6c0d9123749785ed86/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=6" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 7: Кодирование и декодирование информации. Передача информации</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите методы кодирования информации</li>
+                            <li>Проанализируйте способы передачи закодированной информации</li>
+                        </ol>
+                        <p><strong>Важные моменты:</strong></p>
+                        <ul>
+                            <li>Проверьте корректность кодировки на всех этапах передачи</li>
+                            <li>Учитывайте возможные искажения при передаче данных</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Закодируйте и передайте сообщение "Информатика".</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=N_PM40gtDFQ" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/8008034c0682051d05dcb2f65441a1b1/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=7" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 8: Перебор слов и системы счисления</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите количество символов в слове</li>
+                            <li>Найдите все возможные комбинации символов</li>
+                        </ol>
+                        <p><strong>Полезные советы:</strong></p>
+                        <ul>
+                            <li>Используйте дерево решений для визуализации всех возможных комбинаций</li>
+                            <li>Проверяйте граничные случаи при переборе вариантов</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Сгенерируйте все возможные слова из букв "А", "Б", "В".</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=DM6bE_QZBnU" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/1ecce088d1717477fbbc1e65ee839132/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=8" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 9: Работа с таблицами</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите структуру таблиц</li>
+                            <li>Составьте запросы для обработки данных</li>
+                            <li>Проверьте все условия фильтрации данных</li>
+                            <li>Учитывайте связи между таблицами</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Внимательно проверяйте условия выборки данных из таблиц</li>
+                            <li>Используйте сортировку для упорядочивания результатов</li>
+                            <li>Применяйте агрегатные функции (COUNT, SUM, AVG) при необходимости</li>
+                            <li>Проверяйте корректность объединения таблиц через JOIN</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>На основе таблиц базы данных получите список товаров:</p>
+                            <pre>
+Products (ID, Name, Price, Category)
+Orders (OrderID, ProductID, Quantity)
+Categories (CategoryID, CategoryName)
+
+Необходимо:
+1. Найти все товары дороже 1000 рублей
+2. Сгруппировать по категориям
+3. Показать только категории с более чем 5 товарами</pre>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+SELECT c.CategoryName, COUNT(p.ID) as ProductCount
+FROM Categories c
+JOIN Products p ON c.CategoryID = p.Category
+WHERE p.Price > 1000
+GROUP BY c.CategoryName
+HAVING COUNT(p.ID) > 5
+ORDER BY ProductCount DESC;</pre>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=f7ehZL_BFOA" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/1ecce088d1717477fbbc1e65ee839132/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=9" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 10: Поиск символов в текстовом редакторе</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите символы для поиска</li>
+                            <li>Реализуйте алгоритм поиска в строке</li>
+                            <li>Учтите все возможные варианты расположения символов</li>
+                            <li>Проверьте граничные условия поиска</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Используйте регулярные выражения для эффективного поиска</li>
+                            <li>Учитывайте регистр символов при поиске</li>
+                            <li>Проверяйте специальные символы и пробелы</li>
+                            <li>Рассматривайте возможность использования встроенных функций поиска</li>
+                            <li>Обратите внимание на производительность при работе с большими текстами</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Найдите все вхождения буквы "А" в строке "Математика".</p>
+                            <p><strong>Пример решения:</strong></p>
+                            <pre>
+string = "Математика"
+count = 0
+positions = []
+
+for i in range(len(string)):
+    if string[i].lower() == 'а':
+        count += 1
+        positions.append(i)
+
+print(f"Количество букв 'А': {count}")
+print(f"Позиции: {positions}")
+                            </pre>
+                            <p><strong>Ответ:</strong> В слове "Математика" буква "а" встречается 3 раза в позициях [1, 3, 8]</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=BKYXK9q7OmE" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/b85f85308a1bf6f6e7e3567c6596f617/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=10" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 11: Вычисление количества информации</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите количество символов в сообщении</li>
+                            <li>Рассчитайте количество информации</li>
+                            <li>Учитывайте особенности кодировки (ASCII, UTF-8, др.)</li>
+                            <li>Проверьте все условия передачи данных</li>
+                            <li>Используйте формулу I = K * i, где:
+                                <ul>
+                                    <li>I - количество информации</li>
+                                    <li>K - количество символов</li>
+                                    <li>i - информационный вес одного символа</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Учитывайте различные системы кодирования информации</li>
+                            <li>Помните про основные единицы измерения информации: бит, байт, Кб, Мб, Гб</li>
+                            <li>При работе с текстом учитывайте, что один символ в разных кодировках может занимать разное количество памяти</li>
+                            <li>Для изображений и звука используйте специальные формулы расчета</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Определите количество информации в сообщении "Привет".</p>
+                            <p><strong>Решение:</strong></p>
+                            <ol>
+                                <li>Длина сообщения: 6 символов</li>
+                                <li>В кодировке ASCII один символ занимает 8 бит (1 байт)</li>
+                                <li>Общий объем: 6 * 8 = 48 бит = 6 байт</li>
+                            </ol>
+                            <p><strong>Ответ:</strong> 6 байт</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=hB4gPk_oakw" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/a067136e04838c3022d0420386e44400/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=11" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 12: Выполнение алгоритмов для исполнителей</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите задачу для исполнителя</li>
+                            <li>Построение алгоритма</li>
+                            <li>Оптимизация количества шагов</li>
+                            <li>Проверка корректности выполнения</li>
+                            <li>Анализ возможных ошибок</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Тестируйте алгоритм на различных входных данных</li>
+                            <li>Используйте блок-схемы для визуализации алгоритма</li>
+                            <li>Проверяйте граничные условия</li>
+                            <li>Учитывайте все возможные состояния исполнителя</li>
+                            <li>Старайтесь минимизировать количество операций</li>
+                        </ul>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Пропуск важных условий в алгоритме</li>
+                            <li>Неправильная последовательность команд</li>
+                            <li>Отсутствие проверки граничных случаев</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите алгоритм, который выполняет простые арифметические операции.</p>
+                            <p><strong>Пример решения:</strong></p>
+                            <pre>
+НАЧАЛО
+    ВВОД x, y
+    
+    // Сложение
+    sum = x + y
+    
+    // Умножение
+    product = x * y
+    
+    // Проверка деления на ноль
+    ЕСЛИ y ≠ 0 ТО
+        quotient = x / y
+    ИНАЧЕ
+        ВЫВОД "Ошибка: деление на ноль"
+    КОНЕЦ ЕСЛИ
+    
+    ВЫВОД sum, product, quotient
+КОНЕЦ</pre>
+                            <p><strong>Анализ решения:</strong></p>
+                            <ul>
+                                <li>Алгоритм включает базовые операции</li>
+                                <li>Присутствует проверка деления на ноль</li>
+                                <li>Результаты всех операций сохраняются</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=qW32L3Ntt78" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/2a974aa30cf4eecf5bd1c50a3e0b6bb4/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=12" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 13: Организация компьютерных сетей. Адресация</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ сетевой структуры</li>
+                            <li>Работа с IP-адресами</li>
+                            <li>Понимание маски подсети</li>
+                            <li>Расчет диапазона адресов в сети</li>
+                            <li>Определение широковещательного адреса</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Проверяйте корректность IP-адресации и маршрутизации</li>
+                            <li>Учитывайте классы IP-адресов (A, B, C)</li>
+                            <li>Обращайте внимание на особые диапазоны адресов (localhost, private networks)</li>
+                            <li>Помните про зарезервированные адреса в подсети</li>
+                        </ul>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Неверный расчет количества хостов в подсети</li>
+                            <li>Ошибки в определении сетевого и широковещательного адресов</li>
+                            <li>Неправильное применение маски подсети</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Для узла с IP-адресом 192.168.128.17 адрес сети равен 192.168.128.0. Чему равно наибольшее возможное значение третьего слева октета маски подсети?</p>
+                            <p><strong>Решение:</strong></p>
+                            <ol>
+                                <li>Сравниваем IP-адрес узла (192.168.128.17) и адрес сети (192.168.128.0)</li>
+                                <li>Видим, что различия только в последнем октете</li>
+                                <li>Значит, маска должна отсекать только последний октет</li>
+                                <li>Третий октет маски должен быть равен 255</li>
+                            </ol>
+                            <p><strong>Ответ:</strong> 255</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=mOAkDKakInk" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/e77ba5f642969539f8a7bca45dd78ebd/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=13" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 14: Кодирование чисел. Системы счисления</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите системы счисления, между которыми нужно выполнить преобразование</li>
+                            <li>Выполните преобразования пошагово, соблюдая правила перевода</li>
+                            <li>При переводе в двоичную систему делите на 2 и записывайте остатки</li>
+                            <li>При переводе в десятичную умножайте каждый разряд на основание в степени позиции</li>
+                            <li>Используйте промежуточные преобразования через десятичную систему при необходимости</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Практикуйте быстрое преобразование между системами счисления</li>
+                            <li>Запомните степени двойки: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024</li>
+                            <li>Выучите таблицу соответствия для шестнадцатеричной системы (0-9, A-F)</li>
+                            <li>При работе с большими числами разбивайте их на группы по 3 (для восьмеричной) или 4 (для шестнадцатеричной) бита</li>
+                            <li>Обратите внимание на особые случаи при работе с отрицательными числами и дробями</li>
+                        </ul>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Неправильный порядок записи остатков при делении</li>
+                            <li>Ошибки в степенях при переводе в десятичную систему</li>
+                            <li>Пропуск нулей при группировке битов</li>
+                            <li>Неверное использование букв в шестнадцатеричной системе</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Преобразуйте число 10 из десятичной системы в двоичную.</p>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+10 ÷ 2 = 5 (остаток 0)
+5 ÷ 2 = 2  (остаток 1)
+2 ÷ 2 = 1  (остаток 0)
+1 ÷ 2 = 0  (остаток 1)
+
+Результат (снизу вверх): 1010</pre>
+                            <p>Проверка: 1010₂ = 1×2³ + 0×2² + 1×2¹ + 0×2⁰ = 8 + 0 + 2 + 0 = 10₁₀</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=2CaGxf7NG2I" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/7a247972958f65b3c55ab5c00629f9ab/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=14" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 15: Преобразование логических выражений</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ логического выражения</li>
+                            <li>Преобразование выражения</li>
+                        </ol>
+                        <p><strong>Основные законы логики:</strong></p>
+                        <ul>
+                            <li>Коммутативность</li>
+                            <li>Ассоциативность</li>
+                        </ul>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Используйте законы де Моргана для упрощения выражений</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Преобразуйте выражение A И (B ИЛИ C) в нормальную форму.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=tHNEptDgud4" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/9e7be120aaac6b1043cc10327d3e0d96/?playlist=275895" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=15" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 16: Рекурсивные алгоритмы</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите базовый случай рекурсии (условие выхода)</li>
+                            <li>Опишите рекурсивный шаг (как задача сводится к подзадаче)</li>
+                            <li>Проверьте корректность работы на малых значениях</li>
+                            <li>Оцените глубину рекурсии и возможное переполнение стека</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Всегда проверяйте базовый случай в рекурсии</li>
+                            <li>Следите за тем, чтобы рекурсия всегда приводила к базовому случаю</li>
+                            <li>Используйте мемоизацию для оптимизации при повторяющихся вычислениях</li>
+                            <li>Рассмотрите возможность замены рекурсии на итерацию при большой глубине</li>
+                            <li>Внимательно отслеживайте граничные условия</li>
+                        </ul>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Отсутствие базового случая</li>
+                            <li>Бесконечная рекурсия</li>
+                            <li>Неправильная обработка граничных случаев</li>
+                            <li>Избыточные рекурсивные вызовы</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите рекурсивный алгоритм для вычисления чисел Фибоначчи.</p>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+def fib(n):
+    # Базовый случай
+    if n <= 1:
+        return n
+    # Рекурсивный шаг    
+    return fib(n-1) + fib(n-2)
+
+# Оптимизированная версия с мемоизацией
+def fib_memo(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fib_memo(n-1, memo) + fib_memo(n-2, memo)
+    return memo[n]</pre>
+                            <p><strong>Анализ решения:</strong></p>
+                            <ul>
+                                <li>Базовый случай: n ≤ 1</li>
+                                <li>Рекурсивный шаг: F(n) = F(n-1) + F(n-2)</li>
+                                <li>Оптимизация: использование словаря memo для хранения промежуточных результатов</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=Z6cCUIGhans" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/92543cfa3f6e300eac18427fdcacc609/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=16" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 17: Обработка числовой последовательности</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите входные данные и их структуру</li>
+                            <li>Реализуйте алгоритм обработки чисел</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Оптимизируйте алгоритм для больших последовательностей</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу для нахождения суммы чисел в последовательности.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=pSUgdABpcB8" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/388e6891c888dafc1ac74e3f04555ad3/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=17" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 18: Робот-сборщик монет</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите параметры движения робота</li>
+                            <li>Напишите алгоритм сбора монет</li>
+                            <li>Учитывайте ограничения движения робота</li>
+                            <li>Оптимизируйте маршрут для минимизации шагов</li>
+                            <li>Проверьте все граничные условия и препятствия</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Продумывайте оптимальный маршрут движения робота</li>
+                            <li>Используйте матрицу для представления игрового поля</li>
+                            <li>Применяйте алгоритмы поиска кратчайшего пути (например, A* или Дейкстра)</li>
+                            <li>Учитывайте энергозатраты на каждое движение</li>
+                            <li>Предусмотрите механизм обхода препятствий</li>
+                        </ul>
+                        <p><strong>Типичные ошибки:</strong></p>
+                        <ul>
+                            <li>Игнорирование препятствий на поле</li>
+                            <li>Неоптимальный выбор маршрута</li>
+                            <li>Отсутствие проверки границ поля</li>
+                            <li>Зацикливание при обходе препятствий</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Робот находится в левом верхнем углу поля размером 8x8. На поле случайным образом расположены монеты и препятствия. Необходимо собрать все доступные монеты, избегая препятствий.</p>
+                            <p><strong>Пример решения:</strong></p>
+                            <pre>
+def collect_coins(field):
+    n, m = len(field), len(field[0])
+    visited = [[False] * m for _ in range(n)]
+    coins = 0
+    
+    def is_valid(x, y):
+        return 0 <= x < n and 0 <= y < m and not field[x][y] == '#'
+    
+    def dfs(x, y):
+        nonlocal coins
+        if not is_valid(x, y) or visited[x][y]:
+            return
+            
+        visited[x][y] = True
+        if field[x][y] == 'C':
+            coins += 1
+            
+        # Проверяем все возможные направления
+        for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            new_x, new_y = x + dx, y + dy
+            dfs(new_x, new_y)
+    
+    dfs(0, 0)
+    return coins</pre>
+                            <p><strong>Результат:</strong> Алгоритм вернет количество собранных монет с учетом препятствий и границ поля.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=DCAYk_3J7No" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/bfbccd16bc71b21643f37aec303e2de8/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=18" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 19: Выигрышная стратегия. Задание 1</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите условия выигрыша в игре</li>
+                            <li>Разработайте стратегию для достижения победы</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Анализируйте все возможные ходы противника</li>
+                        </ul>
+                        <p><strong>Шаблон решения на Python:</strong></p>
+                        <pre>
+def can_win(position: int) -> bool:
+    """
+    Проверяет, может ли игрок выиграть из текущей позиции
+    
+    Args:
+        position (int): Текущая позиция в игре
+        
+    Returns:
+        bool: True если есть выигрышная стратегия, False иначе
+    """
+    if position >= WINNING_POSITION:
+        return True
+        
+    # Проверяем все возможные ходы
+    possible_moves = [1, 2, 3]  # Пример возможных ходов
+    for move in possible_moves:
+        new_position = position + move
+        # Если после нашего хода противник не может выиграть - 
+        # это выигрышная стратегия
+        if not can_win(new_position):
+            return True
+    return False
+
+def find_winning_strategy(position: int) -> list:
+    """
+    Находит все выигрышные ходы из текущей позиции
+    
+    Args:
+        position (int): Текущая позиция
+        
+    Returns:
+        list: Список выигрышных ходов
+    """
+    winning_moves = []
+    possible_moves = [1, 2, 3]  # Пример возможных ходов
+    
+    for move in possible_moves:
+        new_position = position + move
+        if not can_win(new_position):
+            winning_moves.append(move)
+            
+    return winning_moves
+
+# Пример использования
+if __name__ == "__main__":
+    start_position = 10
+    WINNING_POSITION = 20
+    
+    print(f"Выигрышная стратегия существует: {can_win(start_position)}")
+    print(f"Выигрышные ходы: {find_winning_strategy(start_position)}")</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=ZOzZh_-fW8U" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/b8b835b8136d39945e1362aef3c6414c/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=19" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 20: Выигрышная стратегия. Задание 2</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите правила игры</li>
+                            <li>Разработайте стратегию на основе анализа</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Рассматривайте худший сценарий развития игры</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Опишите стратегию выигрыша в игре на двоих.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=ZOzZh_-fW8U" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/b8b835b8136d39945e1362aef3c6414c/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=20" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 21: Выигрышная стратегия. Задание 3</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите условия, при которых враг не сможет выиграть</li>
+                            <li>Разработайте стратегии для каждого хода</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Используйте метод от противного при анализе стратегий</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Опишите стратегию, которая гарантирует победу в игре.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=ZOzZh_-fW8U" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/b8b835b8136d39945e1362aef3c6414c/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=21" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 22: Многопроцессорные системы</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите архитектуру многопроцессорной системы</li>
+                            <li>Проанализируйте способы распределения задач</li>
+                            <li>Вычислите время выполнения для каждого процесса</li>
+                            <li>Определите критический путь выполнения</li>
+                            <li>Учитывайте зависимости между процессами</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Учитывайте особенности параллельной обработки данных</li>
+                            <li>Проверяйте синхронизацию процессов</li>
+                            <li>Анализируйте возможные конфликты при доступе к ресурсам</li>
+                            <li>Оптимизируйте распределение нагрузки между процессорами</li>
+                            <li>Учитывайте накладные расходы на коммуникацию между процессорами</li>
+                        </ul>
+                        <p><strong>Шаблон решения:</strong></p>
+                        <pre>
+def calculate_execution_time(processes: list, dependencies: dict) -> int:
+    """
+    Вычисляет общее время выполнения процессов с учетом зависимостей
+    
+    Args:
+        processes: список кортежей (id, time) с временем выполнения каждого процесса
+        dependencies: словарь зависимостей между процессами
+        
+    Returns:
+        int: общее время выполнения
+    """
+    total_time = 0
+    available_processors = 4  # Пример: система с 4 процессорами
+    
+    # Здесь должна быть логика распределения процессов
+    # с учетом зависимостей и доступных процессоров
+    
+    return total_time</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>В многопроцессорной системе с 4 процессорами выполняются 6 процессов со следующими характеристиками:</p>
+                            <pre>
+Процесс   Время выполнения   Зависимости
+P1        3                  -
+P2        2                  P1
+P3        4                  P1
+P4        1                  P2, P3
+P5        2                  P4
+P6        3                  P4</pre>
+                            <p><strong>Решение:</strong></p>
+                            <ol>
+                                <li>Строим граф зависимостей процессов</li>
+                                <li>Определяем возможные параллельные процессы</li>
+                                <li>Вычисляем минимальное время выполнения всех процессов</li>
+                                <li>Учитываем ограничения многопроцессорной системы</li>
+                            </ol>
+                            <p><strong>Ответ:</strong> 9 единиц времени</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=qCa-auBwiTs" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/f1a4724264641d4a77486feaf254bde1/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=22" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 23: Оператор присваивания и ветвления. Перебор вариантов, построение дерева</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите условия для операций присваивания и ветвления</li>
+                            <li>Реализуйте алгоритм перебора вариантов</li>
+                            <li>Постройте дерево решений для визуализации всех возможных путей</li>
+                            <li>Проверьте все возможные комбинации значений</li>
+                            <li>Оптимизируйте перебор для исключения повторяющихся веток</li>
+                        </ol>
+                        <p><strong>Дополнительные рекомендации:</strong></p>
+                        <ul>
+                            <li>Визуализируйте дерево вариантов для лучшего понимания</li>
+                            <li>Используйте рекурсию для построения дерева решений</li>
+                            <li>Применяйте методы оптимизации для сокращения перебора</li>
+                            <li>Проверяйте граничные условия на каждом шаге</li>
+                            <li>Используйте мемоизацию для хранения промежуточных результатов</li>
+                        </ul>
+                        <p><strong>Шаблон решения:</strong></p>
+                        <pre>
+def build_decision_tree(state, depth, max_depth):
+    """
+    Построение дерева решений
+    
+    Args:
+        state: текущее состояние
+        depth: текущая глубина
+        max_depth: максимальная глубина
+    
+    Returns:
+        dict: дерево решений
+    """
+    if depth >= max_depth:
+        return None
+        
+    tree = {}
+    possible_moves = get_possible_moves(state)
+    
+    for move in possible_moves:
+        new_state = apply_move(state, move)
+        tree[move] = build_decision_tree(new_state, depth + 1, max_depth)
+    
+    return tree
+
+def get_possible_moves(state):
+    """
+    Получение всех возможных ходов из текущего состояния
+    """
+    moves = []
+    # Логика определения возможных ходов
+    return moves
+
+def apply_move(state, move):
+    """
+    Применение хода к текущему состоянию
+    """
+    new_state = state.copy()
+    # Логика применения хода
+    return new_state</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Постройте дерево решений для следующей задачи: из числа N можно получить новое число путем прибавления 1 или умножения на 2. Необходимо получить число M за минимальное количество операций.</p>
+                            <p><strong>Решение:</strong></p>
+                            <pre>
+# Начальное состояние: N = 3, целевое M = 10
+# Уровень 1: 3 -> [4, 6]
+# Уровень 2: 4 -> [5, 8], 6 -> [7, 12]
+# Уровень 3: 5 -> [6, 10], 8 -> [9, 16]
+# Найдено решение: 3 -> 6 -> 7 -> 8 -> 9 -> 10</pre>
+                            <p><strong>Результат:</strong> Минимальное количество операций: 5</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=jSdA0SF8vy0" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/fd73e058b392d7cdafe8641d04c39843/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=23" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 24: Обработка символьных строк</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите операции над символьными строками</li>
+                            <li>Реализуйте алгоритм обработки строк</li>
+                        </ol>
+                        <p><strong>Шаблон кода:</strong></p>
+                        <pre>
+def process_string(s: str) -> str:
+    result = ""
+    # Ваш код обработки символов здесь
+    return result
+
+if __name__ == "__main__":
+    input_string = input()
+    print(process_string(input_string))</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите алгоритм для подсчета количества символов в строке.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=vOMP-Jdz4Nk" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/2bc98c23dc4644d820e2c6b0e8c34d1f/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=24" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 25: Обработка целочисленной информации</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите входные данные и их структуру</li>
+                            <li>Реализуйте алгоритм обработки целых чисел</li>
+                        </ol>
+                        <p><strong>Шаблон кода:</strong></p>
+                        <pre>
+def process_numbers():
+    numbers = []
+    with open('input.txt', 'r') as f:
+        for line in f:
+            numbers.append(int(line))
+    
+    result = []
+    # Ваш код обработки здесь
+    
+    with open('output.txt', 'w') as f:
+        f.write(str(result))
+
+if __name__ == "__main__":
+    process_numbers()</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу для сортировки массива целых чисел.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=gEfVVNsMzb4" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/c35846286510677138ba53acd146d4d3/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=25" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 26: Обработка целочисленной информации</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Определите входные данные для обработки</li>
+                            <li>Реализуйте алгоритм, который выполняет необходимые операции</li>
+                        </ol>
+                        <p><strong>Шаблон кода:</strong></p>
+                        <pre>
+def process_data():
+    with open('input.txt', 'r') as f:
+        n = int(f.readline())
+        data = []
+        for _ in range(n):
+            size, value = map(int, f.readline().split())
+            data.append((size, value))
+    
+    result = []
+    # Ваш код обработки здесь
+    
+    with open('output.txt', 'w') as f:
+        f.write(str(result))
+
+if __name__ == "__main__":
+    process_data()</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу для нахождения максимального числа в массиве.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=QiUpU0otXh4" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/42181d300adf0a1d27efbbb9f07518c9/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=26" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 27: Программирование</h3>
+                    <div class="solution">
+                        <p><strong>Ключевые шаги решения:</strong></p>
+                        <ol>
+                            <li>Анализ входных данных и условий задачи</li>
+                            <li>Разработка алгоритма для решения</li>
+                        </ol>
+                        <p><strong>Шаблон кода:</strong></p>
+                        <pre>
+def solve(n: int, data: list) -> int:
+    result = 0
+    # Ваш код решения здесь
+    return result
+
+def process_file(filename: str):
+    with open(filename, 'r') as f:
+        n = int(f.readline())
+        data = []
+        for _ in range(n):
+            data.append(int(f.readline()))
+    
+    result = solve(n, data)
+    
+    with open('output.txt', 'w') as f:
+        f.write(str(result))
+
+if __name__ == "__main__":
+    process_file('input.txt')</pre>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу, которая обрабатывает последовательность чисел.</p>
+                            <p><strong>Ответ:</strong> Ваш ответ здесь.</p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=aJuVDirgEXg" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/dd54cdd4115e7f5b37ba30eb585e7e9c/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-ege.sdamgia.ru/test?theme=27" target="_blank">Решу ЕГЭ</a></p>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-button next-btn" onclick="showNextCard()">→</button>
+        </div>
+    </div>
+
+<script>
+let currentCardIndex = 0;
+const cards = document.querySelectorAll('.task-card');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+
+function updateButtonStates() {
+    prevBtn.disabled = currentCardIndex === 0;
+    nextBtn.disabled = currentCardIndex === cards.length - 1;
+}
+
+function updateCardClasses() {
+    cards.forEach((card, index) => {
+        card.classList.remove('active', 'prev', 'next');
+        if (index === currentCardIndex) {
+            card.classList.add('active');
+        } else if (index < currentCardIndex) {
+            card.classList.add('prev');
+        } else {
+            card.classList.add('next');
+        }
+    });
+}
+
+function showNextCard() {
+    if (currentCardIndex < cards.length - 1) {
+        currentCardIndex++;
+        updateCardClasses();
+        updateButtonStates();
+    }
+}
+
+function showPrevCard() {
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
+        updateCardClasses();
+        updateButtonStates();
+    }
+}
+
+// Initialize button states
+updateButtonStates();
+</script>
+
+</body></html>

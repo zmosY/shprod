@@ -1,0 +1,296 @@
+<html><head><base href="/">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+}
+
+.header {
+  background: #2c3e50;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.algorithm-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  gap: 20px;
+}
+
+.flowchart {
+  flex: 1;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.flowchart svg {
+  width: 100%;
+  height: auto;
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+}
+
+h2 {
+  color: #34495e;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+p {
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.note {
+  background: #e8f4f8;
+  padding: 15px;
+  border-left: 4px solid #3498db;
+  margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Простейшие алгоритмы</h1>
+</div>
+
+<div class="container">
+  <div class="algorithm-section">
+    <h2>1. Линейный алгоритм</h2>
+    <p>Линейный алгоритм - это самый простой вид алгоритма, где все действия выполняются последовательно, одно за другим, без ветвлений и повторений.</p>
+
+    <div class="flex-container">
+      <div class="flowchart">
+        <h3>Программный пример: Приготовление чая</h3>
+        <svg viewBox="0 0 300 400">
+          <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+          <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+          <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+          <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="105" text-anchor="middle" fill="white">Вскипятить воду</text>
+
+          <line x1="150" y1="120" x2="150" y2="150" stroke="black"></line>
+          <rect x="75" y="150" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="175" text-anchor="middle" fill="white">Насыпать чай</text>
+
+          <line x1="150" y1="190" x2="150" y2="220" stroke="black"></line>
+          <rect x="75" y="220" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="245" text-anchor="middle" fill="white">Залить кипятком</text>
+
+          <line x1="150" y1="260" x2="150" y2="290" stroke="black"></line>
+          <rect x="100" y="290" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+          <text x="150" y="315" text-anchor="middle" fill="white">Конец</text>
+        </svg>
+      </div>
+
+      <div class="flowchart">
+        <h3>Жизненный пример: Дорога в школу</h3>
+        <svg viewBox="0 0 300 400">
+          <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+          <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+          <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+          <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="105" text-anchor="middle" fill="white">Выйти из дома</text>
+
+          <line x1="150" y1="120" x2="150" y2="150" stroke="black"></line>
+          <rect x="75" y="150" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="175" text-anchor="middle" fill="white">Дойти до остановки</text>
+
+          <line x1="150" y1="190" x2="150" y2="220" stroke="black"></line>
+          <rect x="75" y="220" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="245" text-anchor="middle" fill="white">Доехать до школы</text>
+
+          <line x1="150" y1="260" x2="150" y2="290" stroke="black"></line>
+          <rect x="100" y="290" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+          <text x="150" y="315" text-anchor="middle" fill="white">Конец</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="algorithm-section">
+    <h2>2. Алгоритм с условием</h2>
+    <p>Алгоритм с условием (ветвление) позволяет выполнять различные действия в зависимости от выполнения определённого условия.</p>
+
+    <div class="flex-container">
+      <div class="flowchart">
+        <h3>Программный пример: Проверка числа</h3>
+        <svg viewBox="-100 0 500 500">
+          <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+          <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+          <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+          <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="150" y="105" text-anchor="middle" fill="white">Ввод числа X</text>
+
+          <line x1="150" y1="120" x2="150" y2="150" stroke="black"></line>
+          <polygon points="150,150 250,200 150,250 50,200" fill="#f1c40f"></polygon>
+          <text x="150" y="205" text-anchor="middle">X &gt; 0?</text>
+
+          <line x1="250" y1="200" x2="300" y2="200" stroke="black"></line>
+          <line x1="300" y1="200" x2="300" y2="250" stroke="black"></line>
+          <rect x="225" y="250" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="300" y="275" text-anchor="middle" fill="white">Число положительное</text>
+
+          <line x1="50" y1="200" x2="0" y2="200" stroke="black"></line>
+          <line x1="0" y1="200" x2="0" y2="250" stroke="black"></line>
+          <rect x="-75" y="250" width="150" height="40" fill="#2ecc71"></rect>
+          <text x="0" y="275" text-anchor="middle" fill="white">Число отрицательное</text>
+
+          <line x1="0" y1="290" x2="0" y2="350" stroke="black"></line>
+          <line x1="300" y1="290" x2="300" y2="350" stroke="black"></line>
+          <line x1="0" y1="350" x2="300" y2="350" stroke="black"></line>
+          <line x1="150" y1="350" x2="150" y2="380" stroke="black"></line>
+
+          <rect x="100" y="380" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+          <text x="150" y="405" text-anchor="middle" fill="white">Конец</text>
+</svg>
+      </div>
+
+      <div class="flowchart">
+        <h3>Жизненный пример: Поход в кино</h3>
+        <svg viewBox="-100 0 500 500">
+  <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+  <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+  <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+  <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="150" y="105" text-anchor="middle" fill="white">Проверить погоду</text>
+
+  <line x1="150" y1="120" x2="150" y2="150" stroke="black"></line>
+  <polygon points="150,150 250,200 150,250 50,200" fill="#f1c40f"></polygon>
+  <text x="150" y="205" text-anchor="middle">Дождь?</text>
+
+  <line x1="250" y1="200" x2="300" y2="200" stroke="black"></line>
+  <line x1="300" y1="200" x2="300" y2="250" stroke="black"></line>
+  <rect x="225" y="250" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="300" y="275" text-anchor="middle" fill="white">Идём в кино</text>
+
+  <line x1="50" y1="200" x2="0" y2="200" stroke="black"></line>
+  <line x1="0" y1="200" x2="0" y2="250" stroke="black"></line>
+  <rect x="-75" y="250" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="0" y="275" text-anchor="middle" fill="white">Гуляем в парке</text>
+
+  <line x1="0" y1="290" x2="0" y2="350" stroke="black"></line>
+  <line x1="300" y1="290" x2="300" y2="350" stroke="black"></line>
+  <line x1="0" y1="350" x2="300" y2="350" stroke="black"></line>
+  <line x1="150" y1="350" x2="150" y2="380" stroke="black"></line>
+
+  <rect x="100" y="380" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+  <text x="150" y="405" text-anchor="middle" fill="white">Конец</text>
+</svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="algorithm-section">
+    <h2>3. Циклический алгоритм</h2>
+    <p>Цикл - это повторение определённых действий до тех пор, пока выполняется заданное условие.</p>
+
+    <div class="flex-container">
+      <div class="flowchart">
+        <h3>Программный пример: Подсчёт суммы</h3>
+        <svg viewBox="-50 0 400 600">
+  <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+  <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+  <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+  <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="150" y="105" text-anchor="middle" fill="white">Сумма = 0</text>
+
+  <line x1="150" y1="120" x2="150" y2="160" stroke="black"></line>
+  <polygon points="150,160 250,210 150,260 50,210" fill="#f1c40f"></polygon>
+  <text x="150" y="215" text-anchor="middle">i ≤ 10?</text>
+
+  <line x1="250" y1="210" x2="300" y2="210" stroke="black"></line>
+  <line x1="300" y1="210" x2="300" y2="280" stroke="black"></line>
+  <rect x="225" y="280" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="300" y="305" text-anchor="middle" fill="white">Сумма = Сумма + i</text>
+
+  <line x1="300" y1="320" x2="300" y2="350" stroke="black"></line>
+  <rect x="225" y="350" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="300" y="375" text-anchor="middle" fill="white">i = i + 1</text>
+
+  <line x1="300" y1="390" x2="300" y2="420" stroke="black"></line>
+  <line x1="300" y1="420" x2="150" y2="420" stroke="black"></line>
+  <line x1="150" y1="420" x2="150" y2="260" stroke="black"></line>
+
+  <line x1="50" y1="210" x2="0" y2="210" stroke="black"></line>
+  <line x1="0" y1="210" x2="0" y2="480" stroke="black"></line>
+  <line x1="0" y1="480" x2="150" y2="480" stroke="black"></line>
+
+  <rect x="100" y="460" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+  <text x="150" y="485" text-anchor="middle" fill="white">Конец</text>
+</svg>
+      </div>
+
+      <div class="flowchart">
+        <h3>Жизненный пример: Утренняя зарядка</h3>
+        <svg viewBox="-50 0 400 600">
+  <rect x="100" y="10" width="100" height="40" rx="20" fill="#3498db"></rect>
+  <text x="150" y="35" text-anchor="middle" fill="white">Начало</text>
+
+  <line x1="150" y1="50" x2="150" y2="80" stroke="black"></line>
+  <rect x="75" y="80" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="150" y="105" text-anchor="middle" fill="white">Счётчик = 0</text>
+
+  <line x1="150" y1="120" x2="150" y2="160" stroke="black"></line>
+  <polygon points="150,160 250,210 150,260 50,210" fill="#f1c40f"></polygon>
+  <text x="150" y="215" text-anchor="middle">i ≤ 10?</text>
+
+  <line x1="250" y1="210" x2="300" y2="210" stroke="black"></line>
+  <line x1="300" y1="210" x2="300" y2="280" stroke="black"></line>
+  <rect x="225" y="280" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="300" y="305" text-anchor="middle" fill="white">Отжаться 1 раз</text>
+
+  <line x1="300" y1="320" x2="300" y2="350" stroke="black"></line>
+  <rect x="225" y="350" width="150" height="40" fill="#2ecc71"></rect>
+  <text x="300" y="375" text-anchor="middle" fill="white">i = i + 1</text>
+
+  <line x1="300" y1="390" x2="300" y2="420" stroke="black"></line>
+  <line x1="300" y1="420" x2="150" y2="420" stroke="black"></line>
+  <line x1="150" y1="420" x2="150" y2="260" stroke="black"></line>
+
+  <line x1="50" y1="210" x2="0" y2="210" stroke="black"></line>
+  <line x1="0" y1="210" x2="0" y2="480" stroke="black"></line>
+  <line x1="0" y1="480" x2="150" y2="480" stroke="black"></line>
+
+  <rect x="100" y="460" width="100" height="40" rx="20" fill="#e74c3c"></rect>
+  <text x="150" y="485" text-anchor="middle" fill="white">Конец</text>
+</svg>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+</body></html>

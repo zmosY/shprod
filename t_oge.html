@@ -1,0 +1,840 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<title>ОГЭ по информатике - тренажер</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        background: #f0f2f5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+    }
+
+    .slider-container {
+        position: relative;
+        padding: 20px 80px;
+        min-height: 800px; /* Match task-cards min-height */
+        height: auto;
+        overflow: visible;
+    }
+
+    .task-cards {
+        position: relative;
+        height: auto;
+        min-height: 800px; /* Increase minimum height */
+        overflow: visible;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .task-card {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        min-height: auto;
+        height: auto;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        opacity: 0;
+        transform: translateX(100%);
+        overflow-y: auto; /* Add scroll if content overflows */
+    }
+
+    .task-card:first-child .solution {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .task-card:first-child .task-content {
+        margin-bottom: 15px;
+    }
+
+    .task-card:first-child .example-box {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .task-card:first-child {
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .task-card.active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .task-card.prev {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    .task-card.next {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    .task-card h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.7em;
+    }
+
+    .task-content {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        overflow: auto; /* Add scroll if content overflows */
+    }
+
+    .solution {
+        background: #f7f9fc;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 1.1em;
+        overflow: auto; /* Add scroll if content overflows */
+    }
+
+    .solution p {
+        margin-bottom: 20px;
+    }
+
+    .video-link {
+        display: inline-block;
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s;
+        font-size: 1.2em;
+        margin-right: 15px;
+    }
+
+    .video-link:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    .slider-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 20px 25px;
+        cursor: pointer;
+        border-radius: 5px;
+        z-index: 10;
+        transition: background 0.3s ease;
+        font-size: 1.4em;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+
+    .slider-button:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .slider-button:not(:disabled):hover {
+        background: #2980b9;
+    }
+
+    .example-box {
+        background: #e8f4fc;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #3498db;
+        overflow: auto; /* Add scroll if content overflows */
+    }
+
+    .example-box ul {
+        margin-left: 20px;
+        list-style-position: outside;
+        padding-left: 20px;
+    }
+
+    .example-box ul ul {
+        margin-left: 15px;
+        list-style-position: outside;
+        padding-left: 15px;
+    }
+
+    .example-box li {
+        margin-bottom: 5px;
+    }
+
+    .resource-links {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .resource-links .video-links {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .resource-links p {
+        margin: 5px 0;
+    }
+
+    .resource-links a {
+        display: block;
+        color: #3498db;
+        text-decoration: none;
+        margin: 10px 0;
+        font-size: 1.1em;
+    }
+
+    .resource-links a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+    
+    pre {
+        white-space: pre-wrap; /* Allow code blocks to wrap */
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ОГЭ по информатике</h1>
+            <p>Интерактивный тренажер с объяснениями</p>
+        </div>
+
+        <div class="slider-container">
+            <button class="slider-button prev-btn" onclick="showPrevCard()">←</button>
+            <div class="task-cards">
+                <div class="task-card active">
+                    <h3>Задание 1: Количественные параметры информационных объектов</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Подсчитайте количество различных значений (N) в заданном диапазоне</p>
+                        <p>2. Используйте формулу: 2ⁿ ≥ N, где n - искомое количество бит</p>
+                        <p>3. Найдите минимальное значение n, удовлетворяющее неравенству</p>
+                        <p>4. Умножьте количество бит на длину последовательности</p>
+                        <p>5. При необходимости переведите биты в байты (разделите на 8)</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>В системе используется 7-битная кодировка ASCII. Определите объем памяти в байтах для хранения 24 символов.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Один символ занимает 7 бит</p>
+                            <p>2. 24 символа: 7 × 24 = 168 бит</p>
+                            <p>3. Переводим в байты: 168 ÷ 8 = 21 байт</p>
+                            <p><strong>Ответ: 21</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=RUlq1jIBfPI" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/60d48c36c1696ca04bd694c438ee52d3/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=1" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 2: Кодирование и декодирование информации</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите тип кодирования (двоичное, префиксное, равномерное)</p>
+                        <p>2. Составьте таблицу кодовых соответствий</p>
+                        <p>3. Проверьте однозначность декодирования</p>
+                        <p>4. Определите минимальную длину кодового слова</p>
+                        <p>5. Примените правила кодирования/декодирования последовательно</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Даны кодовые слова: А-00, Б-01, В-10, Г-11. Декодируйте сообщение: 001011100010</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Видим, что это равномерный двоичный код (все слова по 2 бита)</p>
+                            <p>2. Разбиваем сообщение на группы по 2 бита: 00 10 11 10 00 10</p>
+                            <p>3. Заменяем по таблице: А В Г В А В</p>
+                            <p><strong>Ответ: АВГВАВ</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=jOZiSekegJY" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/a090ef5a17b7e10e7dccac2d2fba9a45/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=2" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 3: Значение логического выражения</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Преобразуйте логическое выражение в нормальную форму</p>
+                        <p>2. Определите истинные значения переменных</p>
+                        <p>3. Вычислите значение всего выражения</p>
+                        <p>4. Проверьте результаты на различных входных данных</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Вычислите значение выражения: (A ИЛИ B) И (НЕ A И B).</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Подставим A = ЛОЖЬ, B = ИСТИНА: (ЛОЖЬ ИЛИ ИСТИНА) И (НЕ ЛОЖЬ И ИСТИНА) = ИСТИНА.</p>
+                            <p><strong>Ответ: ИСТИНА</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=VvQ7GLMHcKA" class="video-link" target="_blank">YouTube</a>
+                            <a href="hhttps://rutube.ru/video/9a4a4781a956c12e735e7588ea556a05/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=3" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 4: Формальные описания реальных объектов и процессов</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите объект или процесс для описания</p>
+                        <p>2. Выделите основные характеристики</p>
+                        <p>3. Сформулируйте формальные правила описания</p>
+                        <p>4. Проверьте соответствие описания реальным характеристикам</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Опишите формально процесс сортировки массива.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Установите массив чисел</p>
+                            <p>2. Примените алгоритм сортировки</p>
+                            <p>3. Убедитесь, что массив отсортирован</p>
+                            <p><strong>Ответ: Массив отсортирован</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=NdfNS4ZGtCQ" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/86a7eb4ea7bc074823dfea1d5bcf3e72/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=4" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 5: Простой линейный алгоритм для формального исполнителя</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите задачу для исполнителя</p>
+                        <p>2. Сформулируйте последовательность команд</p>
+                        <p>3. Проверьте правильность выполнения алгоритма</p>
+                        <p>4. Протестируйте на различных данных</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Создайте алгоритм, который вычисляет сумму от 1 до N.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Инициализируйте сумму как 0</p>
+                            <p>2. Используйте цикл для добавления значений</p>
+                            <p>3. Верните итоговую сумму</p>
+                            <p><strong>Ответ: Сумма от 1 до N</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=r8INPqrQ86c" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/59c2bfecde3ffd39746e8a878e1c80a3/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=5" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 6: Программа с условным оператором</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите условие для выполнения операций</p>
+                        <p>2. Сформулируйте альтернативы</p>
+                        <p>3. Проверьте правильность выполнения условий</p>
+                        <p>4. Протестируйте программу</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу, которая определяет, является ли число четным.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Введите число</p>
+                            <p>2. Проверьте, делится ли оно на 2</p>
+                            <p>3. Выведите результат</p>
+                            <p><strong>Ответ: Четное или нечетное</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=uRTHfrKln5U" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/f8f43438512afbfe18ec59ab685a37b0/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=6" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 7: Информационно-коммуникационные технологии</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите основные компоненты ИКТ</p>
+                        <p>2. Проанализируйте их взаимодействие</p>
+                        <p>3. Определите применение в практике</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Опишите, как ИКТ помогают в обучении.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Использование интернета для поиска информации</p>
+                            <p>2. Применение онлайн-курсов</p>
+                            <p>3. Использование различных программных средств</p>
+                            <p><strong>Ответ: Примеры использования ИКТ</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=05amn3l3nhk" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/a0d990963cc5993465eb89c8095506cb/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=7" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 8: Запросы для поисковых систем с использованием логических выражений</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите ключевые слова для поиска</p>
+                        <p>2. Используйте логические операторы (AND, OR, NOT)</p>
+                        <p>3. Сформулируйте запрос</p>
+                        <p>4. Проверьте результаты поиска</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Сформулируйте запрос для поиска информации о ИКТ и образовании.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Используйте: ИКТ AND образование</p>
+                            <p>2. Проверьте результаты и уточните запрос при необходимости.</p>
+                            <p><strong>Ответ: Запрос для поиска</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=A-yKd4xdyH4" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/1e923a3edbf0500bb610b9037321fee2/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=8" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 9: Анализирование информации, представленной в виде схем</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите схему и её элементы</p>
+                        <p>2. Проанализируйте связи между элементами</p>
+                        <p>3. Сделайте выводы на основе анализа</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Проанализируйте схему, представленную в виде блок-схемы.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Определите входные и выходные данные</p>
+                            <p>2. Проследите процесс обработки информации</p>
+                            <p><strong>Ответ: Выводы из схемы</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=ffc7JAahoC0" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/ec4bde02fbf226f0b2121f36c30357a4/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=9" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 10: Сравнение чисел в различных системах счисления</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите системы счисления для сравнения</p>
+                        <p>2. Преобразуйте числа в общую систему</p>
+                        <p>3. Сравните значения и сделайте выводы</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Сравните число 10 в десятичной и двоичной системах.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. 10 в десятичной: 10</p>
+                            <p>2. 10 в двоичной: 1010</p>
+                            <p>3. Сравните значения.</p>
+                            <p><strong>Ответ: 10 и 1010</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=jeA7VUD5HgA" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/890ce783a9cbe56a94a046fe847f95bf/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=10" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 11: Использование поиска операционной системы и текстового редактора</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите параметры поиска</p>
+                        <p>2. Используйте фильтры для уточнения запроса</p>
+                        <p>3. Реализуйте поиск в текстовом редакторе</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Найдите все файлы с расширением .txt в системе.</p>
+                            <p><strong>Решение:</strong></p>
+                            <p>1. Используйте поиск по расширению</p>
+                            <p>2. Просмотрите результаты поиска.</p>
+                            <p><strong>Ответ: Список найденных файлов</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=EWPmYmMvn_0" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/fb8e022d788b085f0ef7e0011f5efe23/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=11" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 12: Использование поисковых средств операционной системы</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Распаковка архива:</p>
+                        <ul>
+                            <li>Скачайте и установите WinRAR или 7-Zip</li>
+                            <li>Правой кнопкой по архиву → "Извлечь в текущую папку"</li>
+                            <li>или "Извлечь в {имя_архива}/"</li>
+                        </ul>
+                        <p>2. Поиск файлов в распакованной папке:</p>
+                        <ul>
+                            <li>Используйте поиск Windows (Win + S)</li>
+                            <li>Примените маски файлов (* и ?)</li>
+                            <li>Используйте фильтры по дате и размеру</li>
+                        </ul>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>В архиве Lab12.rar содержится папка с файлами. Найдите в этой папке все файлы, созданные в 2022 году, имя которых содержит слово "отчет".</p>
+                            
+                            <p><strong>Пошаговое решение:</strong></p>
+                            <p>1. Распаковка архива:</p>
+                            <ul>
+                                <li>Правой кнопкой по Lab12.rar</li>
+                                <li>Выберите "Извлечь в Lab12/"</li>
+                                <li>Дождитесь окончания распаковки</li>
+                            </ul>
+                            
+                            <p>2. Поиск нужных файлов:</p>
+                            <ul>
+                                <li>Откройте распакованную папку Lab12</li>
+                                <li>В строке поиска Windows введите: отчет</li>
+                                <li>В параметрах поиска укажите:</li>
+                                <ul>
+                                    <li>Дата изменения: 2022 год</li>
+                                    <li>Выберите "Подпапки" для поиска во всех подкаталогах</li>
+                                </ul>
+                            </ul>
+
+                            <p>3. Дополнительные приемы поиска:</p>
+                            <ul>
+                                <li>Используйте маску "*отчет*.doc*" для поиска документов Word</li>
+                                <li>Сортируйте результаты по дате для удобства</li>
+                                <li>Используйте предварительный просмотр для проверки содержимого</li>
+                            </ul>
+                            
+                            <p><strong>Важно проверить:</strong></p>
+                            <ul>
+                                <li>Все ли файлы правильно распакованы</li>
+                                <li>Корректность даты создания файлов</li>
+                                <li>Соответствие найденных файлов условию задачи</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=q8xFJpvfkKE" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/bd1341c01bc664d00673f91a0c5da0b9/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=12" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 13: Создание презентации или форматирование текста</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Анализ требований к оформлению (шрифты, отступы, стили)</p>
+                        <p>2. Создание структуры документа/презентации</p>
+                        <p>3. Применение форматирования согласно требованиям</p>
+                        <p>4. Проверка единообразия оформления</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Создайте презентацию из 3 слайдов по теме "Компьютерные сети" со следующими требованиями:</p>
+                            <ul>
+                                <li>Титульный слайд: шрифт Arial 32pt, выравнивание по центру</li>
+                                <li>Контентные слайды: заголовок Arial 28pt, текст Times New Roman 24pt</li>
+                                <li>Маркированные списки с отступом 1.25см</li>
+                            </ul>
+                            
+                            <p><strong>Пошаговое решение:</strong></p>
+                            <p>1. Создание титульного слайда:</p>
+                            <ul>
+                                <li>Выбрать макет "Титульный слайд"</li>
+                                <li>Установить шрифт Arial 32pt</li>
+                                <li>Ввести название и автора</li>
+                            </ul>
+                            
+                            <p>2. Создание контентных слайдов:</p>
+                            <ul>
+                                <li>Выбрать макет "Заголовок и объект"</li>
+                                <li>Настроить заголовок (Arial 28pt)</li>
+                                <li>Настроить основной текст (Times New Roman 24pt)</li>
+                                <li>Установить отступы списков 1.25см</li>
+                            </ul>
+                            
+                            <p><strong>Критерии проверки:</strong></p>
+                            <ul>
+                                <li>Соответствие шрифтов и размеров</li>
+                                <li>Правильность отступов</li>
+                                <li>Единообразие оформления всех слайдов</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=BMygBLHW9-M" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/381572bd03982bc0bf38166f51c3c454/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=13" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 14: Обработка большого массива данных</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите размер и структуру массива</p>
+                        <p>2. Подберите алгоритмы обработки (сортировка, фильтрация)</p>
+                        <p>3. Реализуйте обработку с учетом памяти</p>
+                        <p>4. Проверьте корректность обработки</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Дан массив чисел. Найдите среднее значение.</p>
+                            
+                            <p><strong>Алгоритмическое решение:</strong></p>
+                            <p>1. Сложите все элементы</p>
+                            <p>2. Разделите на количество элементов</p>
+                            
+                            <p><strong>Программное решение (Python):</strong></p>
+                            <pre>
+numbers = [5, 2, 8, 1, 9]
+average = sum(numbers) / len(numbers)
+print(average)  # Вывод: 5.0
+                            </pre>
+                            <p><strong>Ответ: 5</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=k7YEjMcxRKw" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/126e9874e8ff0804aebda8e68abeceaf/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=14" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 15: Короткий алгоритм в различных средах исполнения</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите цель алгоритма</p>
+                        <p>2. Подберите необходимые операции</p>
+                        <p>3. Запишите алгоритм в виде последовательности шагов</p>
+                        <p>4. Проверьте алгоритм на тестовых данных</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Создайте алгоритм, который находит максимальное число в массиве.</p>
+                            
+                            <p><strong>Алгоритмическое решение:</strong></p>
+                            <p>1. Инициализируйте переменную max</p>
+                            <p>2. Переберите все элементы массива</p>
+                            <p>3. Сравните и обновите max</p>
+                            
+                            <p><strong>Программное решение (Python):</strong></p>
+                            <pre>
+numbers = [3, 7, 2, 9, 4]
+max_num = numbers[0]
+for num in numbers:
+    if num > max_num:
+        max_num = num
+print(max_num)  # Вывод: 9
+                            </pre>
+                            <p><strong>Ответ: 9</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=A-a_39tKCHk" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/0ac096bffeaaf5167224b2436eb83355/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=15" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+
+                <div class="task-card next">
+                    <h3>Задание 16: Программирование</h3>
+                    <div class="solution">
+                        <p><strong>Общий алгоритм решения:</strong></p>
+                        <p>1. Определите условия задачи</p>
+                        <p>2. Выделите входные и выходные данные</p>
+                        <p>3. Разработайте алгоритм для решения</p>
+                        <p>4. Реализуйте код</p>
+                        <p>5. Проверьте результат на тестовых данных</p>
+                    </div>
+                    <div class="task-content">
+                        <div class="example-box">
+                            <p><strong>Пример задания:</strong></p>
+                            <p>Напишите программу, которая сортирует массив чисел.</p>
+                            
+                            <p><strong>Алгоритмическое решение (сортировка пузырьком):</strong></p>
+                            <p>1. Сравниваем соседние элементы</p>
+                            <p>2. Если левый больше правого - меняем местами</p>
+                            <p>3. Повторяем, пока массив не будет отсортирован</p>
+                            
+                            <p><strong>Программное решение (Python):</strong></p>
+                            <pre>
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+numbers = [64, 34, 25, 12, 22, 11, 90]
+sorted_numbers = bubble_sort(numbers.copy())
+print(sorted_numbers)  # Вывод: [11, 12, 22, 25, 34, 64, 90]
+                            </pre>
+                            <p><strong>Ответ: [11, 12, 22, 25, 34, 64, 90]</strong></p>
+                        </div>
+                    </div>
+                    <div class="resource-links">
+                        <p>Видео-разборы: 
+                            <a href="https://www.youtube.com/watch?v=-pXKgRbySWc" class="video-link" target="_blank">YouTube</a>
+                            <a href="https://rutube.ru/video/7210ac3974e3fe3baafa73ee7703a4f8/" class="video-link" target="_blank">RuTube</a>
+                        </p>
+                        <p>Тренировочные задания: <a href="https://inf-oge.sdamgia.ru/test?theme=16" target="_blank">Решу ОГЭ</a></p>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-button next-btn" onclick="showNextCard()">→</button>
+        </div>
+    </div>
+
+<script>
+let currentCardIndex = 0;
+const cards = document.querySelectorAll('.task-card');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+
+function updateButtonStates() {
+    prevBtn.disabled = currentCardIndex === 0;
+    nextBtn.disabled = currentCardIndex === cards.length - 1;
+}
+
+function updateCardClasses() {
+    cards.forEach((card, index) => {
+        card.classList.remove('active', 'prev', 'next');
+        if (index === currentCardIndex) {
+            card.classList.add('active');
+        } else if (index < currentCardIndex) {
+            card.classList.add('prev');
+        } else {
+            card.classList.add('next');
+        }
+    });
+}
+
+function showNextCard() {
+    if (currentCardIndex < cards.length - 1) {
+        currentCardIndex++;
+        updateCardClasses();
+        updateButtonStates();
+    }
+}
+
+function showPrevCard() {
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
+        updateCardClasses();
+        updateButtonStates();
+    }
+}
+
+// Initialize button states
+updateButtonStates();
+</script>
+
+</body></html>

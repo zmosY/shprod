@@ -1,0 +1,170 @@
+<html><head><base href="/" />
+<meta charset="UTF-8">
+<title>Установка IDE для подготовки к ОГЭ/ЕГЭ по информатике</title>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+
+    .header {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+
+    .step {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-left: 4px solid #2a5298;
+        background: #f8f9fa;
+    }
+
+    .step h3 {
+        color: #1e3c72;
+        margin-top: 0;
+    }
+
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        margin: 30px 0;
+    }
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    .warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    .download-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #2a5298;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .download-btn:hover {
+        background: #1e3c72;
+    }
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>Установка и настройка IDE для подготовки к ОГЭ/ЕГЭ</h1>
+        <p>Пошаговое руководство по установке Python IDLE и PyCharm</p>
+    </div>
+
+    <div class="container">
+        <div class="step">
+            <h3>1. Что такое IDE?</h3>
+            <p>IDE (Integrated Development Environment) - это интегрированная среда разработки, которая помогает программистам писать код более эффективно. Для подготовки к экзаменам мы рекомендуем использовать:</p>
+            <ul>
+                <li>Python IDLE - простая среда, которая идёт вместе с Python</li>
+                <li>PyCharm - более продвинутая среда с множеством функций</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>2. Установка Python и IDLE</h3>
+            <p>Сначала нужно установить сам Python, IDLE будет установлен автоматически:</p>
+            <ol>
+                <li>Перейдите на официальный сайт Python</li>
+                <li>Скачайте последнюю версию Python 3.x</li>
+                <li>Запустите установщик и следуйте инструкциям</li>
+            </ol>
+            <a href="https://www.python.org/downloads/" class="download-btn" target="_blank">Скачать Python</a>
+        </div>
+
+        <div class="step">
+            <h3>3. Установка PyCharm Community Edition</h3>
+            <p>PyCharm Community - это бесплатная версия, которой достаточно для подготовки:</p>
+            <ol>
+                <li>Перейдите на сайт JetBrains</li>
+                <li>Выберите PyCharm Community Edition</li>
+                <li>Скачайте и установите программу</li>
+            </ol>
+            <a href="https://www.jetbrains.com/pycharm/download/" class="download-btn" target="_blank">Скачать PyCharm</a>
+        </div>
+
+        <div class="warning">
+            <h4>⚠️ Важное замечание</h4>
+            <p>При установке Python обязательно поставьте галочку "Add Python to PATH" - это позволит использовать Python из любой папки на компьютере.</p>
+        </div>
+
+        <h3>Видео-инструкция по установке и настройке</h3>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/zFhUYX5JfwE" title="Установка Python и PyCharm" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="step">
+            <h3>4. Первые шаги после установки</h3>
+            <p>После установки рекомендуется:</p>
+            <ul>
+                <li>Создать новый проект в PyCharm</li>
+                <li>Написать и запустить простую программу (например, print("Hello, World!"))</li>
+                <li>Настроить тему оформления и размер шрифта</li>
+                <li>Познакомиться с основными функциями редактора</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>5. Полезные комбинации клавиш</h3>
+            <p>В PyCharm:</p>
+            <ul>
+                <li>Ctrl + Space - автодополнение кода</li>
+                <li>Shift + F10 - запуск программы</li>
+                <li>Ctrl + / - закомментировать/раскомментировать строку</li>
+                <li>Ctrl + D - дублировать текущую строку</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Добавляем анимацию для кнопок
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.3s';
+            });
+            button.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Проверяем загрузку видео
+        document.querySelector('iframe').addEventListener('load', function() {
+            console.log('Видео загружено успешно');
+        });
+    </script>
+</body>
+</html>
